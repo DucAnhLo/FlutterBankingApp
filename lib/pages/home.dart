@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:techcombank_clone/pages/transaction.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:techcombank_clone/pages/navbar.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -9,9 +13,30 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String qrCode = 'Unknown';
+
+  Future<void> scanQRCode() async {
+    try {
+      final qrCode = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666',
+        'Cancel',
+        false,
+        ScanMode.QR,
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        this.qrCode = qrCode;
+      });
+    } on PlatformException {
+      qrCode = 'Failed to get platform version.';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavBarDrawer(),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -88,7 +113,9 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        scanQRCode();
+                      },
                       child: Column(
                         children: <Widget>[
                           Icon(Icons.qr_code, color: Colors.black),
@@ -168,7 +195,6 @@ void _showDialog(BuildContext context) {
     },
   );
 }
-
 
 
 

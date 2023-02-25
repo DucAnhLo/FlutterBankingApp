@@ -62,6 +62,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_barcode_scanner:
+    dependency: "direct main"
+    description:
+      name: flutter_barcode_scanner
+      sha256: "84ac0866b7191be76e81ba6d3a8eec2c535a361a164f02a35b4c06c7d256908a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -70,6 +78,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      sha256: f64fc84e913a3c225588724c811f5f6600562d17fc6f6cea7fda264fc93361ae
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.11"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -123,14 +139,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.2"
-  qr_code_scanner:
-    dependency: "direct dev"
-    description:
-      name: qr_code_scanner
-      sha256: "24250bf4874679b60abf7cb4b92cd62dbdc08a3081773bed234b4fbc31baa81c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -194,4 +202,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=2.19.2 <3.0.0"
-  flutter: ">=1.10.0"
+  flutter: ">=1.12.13+hotfix.5"

@@ -4,13 +4,16 @@ import 'package:techcombank_clone/pages/loading.dart';
 
 
 
+
+
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: '/',
+    initialRoute: '/home',
     routes: {
       '/' :(context) => Loading(),
       '/home':(context) => Home(),
+
     },
   ));
 }
