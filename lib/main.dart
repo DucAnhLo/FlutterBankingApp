@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:techcombank_clone/pages/home.dart';
 import 'package:techcombank_clone/pages/loading.dart';
+import 'package:techcombank_clone/pages/wrapper.dart';
 
 
 
@@ -9,9 +10,10 @@ import 'package:techcombank_clone/pages/loading.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: '/home',
+    initialRoute: '/',
     routes: {
-      '/' :(context) => Loading(),
+      '/' :(context) => Wrapper(),
+      '/loading':(context) => Loading(),
       '/home':(context) => Home(),
 
     },
