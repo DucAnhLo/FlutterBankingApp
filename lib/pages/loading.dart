@@ -49,7 +49,7 @@ class _LoadingState extends State<Loading> {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.pushReplacementNamed(context, '/home');
+                              Navigator.pushReplacementNamed(context, '/wrapper');
                             },
                             child: Text("Login", style: TextStyle(fontSize: 17)),
                           ),

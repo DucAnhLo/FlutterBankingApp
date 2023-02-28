@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<SignUp> createState() => _SignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInState extends State<SignUp> {
   final username = TextEditingController();
   final password= TextEditingController();
 
@@ -73,30 +73,6 @@ class _SignInState extends State<SignIn> {
                 GestureDetector(
                   onTap: (){
                     
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(25),
-                    margin: EdgeInsets.symmetric(horizontal: 25),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(8)
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 25),
-                GestureDetector(
-                  onTap: (){
-                    Navigator.pushNamed(context, 'signup');
                   },
                   child: Container(
                     padding: EdgeInsets.all(25),
