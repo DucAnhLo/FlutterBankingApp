@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:techcombank_clone/services/auth.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -13,6 +14,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final username = TextEditingController();
   final password= TextEditingController();
+  final AuthService _auth = AuthService();
 
 
   @override
@@ -71,8 +73,15 @@ class _SignInState extends State<SignIn> {
                 ),
                 SizedBox(height: 25),
                 GestureDetector(
-                  onTap: (){
-                    
+                  onTap: () async {
+                    dynamic result = await _auth.signInAno();
+                    if(result == null){
+                      print('error signing in ');
+                    } else {
+                      print('signed in');
+                      print(result.uid);
+                    }
+                    Navigator.pushReplacementNamed(context, '/home');
                   },
                   child: Container(
                     padding: EdgeInsets.all(25),

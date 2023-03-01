@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:techcombank_clone/models/user.dart';
 import 'package:techcombank_clone/pages/transaction.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:techcombank_clone/pages/navbar.dart';
+import 'package:techcombank_clone/services/auth.dart';
+
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -36,7 +38,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavBarDrawer(),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -61,7 +62,7 @@ class _HomeState extends State<Home> {
                       Icons.menu,
                       color: Colors.black,
                     ),
-                    onPressed: () {},
+                    onPressed: () {_showSetting(context);},
                   ),
               ),
             ),
@@ -196,5 +197,31 @@ void _showDialog(BuildContext context) {
   );
 }
 
+void _showSetting(BuildContext context) {
+  final AuthService _auth = AuthService();
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Hello"),
+        content: Container(
+          width: double.maxFinite,
+          height: 300,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextButton.icon(
+                onPressed: () async{
+                  await _auth.signOut();
+                }, 
+                icon: Icon(Icons.logout_rounded, color: Colors.black, size: 30,), 
+                label: Text('Log Out', style: TextStyle(color: Colors.grey, fontSize: 16),))
+            ],
+          )
+        ),
+      );
+    },
+  );
+}
 
 

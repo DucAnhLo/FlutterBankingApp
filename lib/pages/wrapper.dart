@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:techcombank_clone/pages/authenticate/authenticate.dart';
 import 'package:techcombank_clone/pages/authenticate/sign_in.dart';
 import 'package:techcombank_clone/pages/home.dart';
 import 'package:techcombank_clone/pages/loading.dart';
+import 'package:provider/provider.dart';
+import 'package:techcombank_clone/models/user.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({super.key});
@@ -9,7 +12,13 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final user = Provider.of<MyUser?>(context);
+
     //return either Home or Authenticate
-    return SignIn();
+    if(user == null){
+      return Authenticate();
+    }else {
+      return Home();
+    }
   }
 }
