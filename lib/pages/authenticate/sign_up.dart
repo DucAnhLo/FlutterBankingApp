@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:techcombank_clone/services/auth.dart';
+
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -11,8 +13,9 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignInState extends State<SignUp> {
-  final username = TextEditingController();
-  final password= TextEditingController();
+  String email = '';
+  String password= '';
+  final AuthService _auth = AuthService();
 
 
   @override
@@ -21,22 +24,25 @@ class _SignInState extends State<SignUp> {
         backgroundColor: Colors.grey[300],
         body: Container(
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/bg1.jpeg'),
-                fit: BoxFit.cover
-              )
+              // image: DecorationImage(
+              //   //image: AssetImage('assets/bg1.jpeg'),
+              //   fit: BoxFit.cover
+              // )
             ),
             padding: EdgeInsets.only(top: 150),
             child: Center(
               child: Column(children: [
                 SizedBox(height: 50,),
-                Icon(Icons.lock,size: 100,),
+                Icon(Icons.app_registration_rounded,size: 100,),
                 SizedBox(height: 50,),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: TextField(
-                    controller: username,
-                    
+                  child: TextFormField(
+                    onChanged: (value) {
+                      setState(() {
+                        email = value;
+                      });
+                    },
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white)
@@ -53,8 +59,12 @@ class _SignInState extends State<SignUp> {
                 SizedBox(height: 25),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: TextField(
-                    controller: password,
+                  child: TextFormField(
+                    onChanged: (value) {
+                      setState(() {
+                        password = value;
+                      });
+                    },
                     obscureText: true,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
@@ -72,7 +82,8 @@ class _SignInState extends State<SignUp> {
                 SizedBox(height: 25),
                 GestureDetector(
                   onTap: (){
-                    
+                    print(email);
+                    print(password);
                   },
                   child: Container(
                     padding: EdgeInsets.all(25),
@@ -92,10 +103,35 @@ class _SignInState extends State<SignUp> {
                       ),
                     ),
                   ),
-                )
-              ]),
-            ),
-          ),
-        );
+                ),
+                SizedBox(height: 25),
+                Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Already have an account?',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16
+                            ),
+                          ),
+                          SizedBox(width: 20,),
+                          TextButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(Colors.black)
+                            ),
+                            onPressed: (){
+                              Navigator.pushReplacementNamed(context, '/signin');
+                            }, 
+                            child: Text('Sign In', style: TextStyle(color: Colors.white),))
+                        ]
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+            );
   }
 }

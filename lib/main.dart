@@ -1,7 +1,7 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:techcombank_clone/models/user.dart';
+import 'package:techcombank_clone/pages/authenticate/sign_in.dart';
 import 'package:techcombank_clone/pages/authenticate/sign_up.dart';
 import 'package:techcombank_clone/pages/home.dart';
 import 'package:techcombank_clone/pages/loading.dart';
@@ -28,7 +28,8 @@ Future <void> main() async {
         '/wrapper' :(context) => Wrapper(),
         '/loading':(context) => Loading(),
         '/home':(context) => Home(),
-        'signup':(context) => SignUp()
+        '/signup':(context) => SignUp(),
+        '/signin':(context) => SignIn()
       },
     ),
   ));                                                                                                                                                                       
