@@ -37,6 +37,7 @@ class _HomeState extends State<Home> {
   }
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -138,9 +139,9 @@ class _HomeState extends State<Home> {
               ),
             ),
           ],
+          ),
         ),
-      ),
-    );       
+      );      
   }
 }
 
@@ -213,6 +214,7 @@ void _showSetting(BuildContext context) {
               TextButton.icon(
                 onPressed: () async{
                   await _auth.signOut();
+                  Navigator.pushReplacementNamed(context, '/wrapper');
                 }, 
                 icon: Icon(Icons.logout_rounded, color: Colors.black, size: 30,), 
                 label: Text('Log Out', style: TextStyle(color: Colors.grey, fontSize: 16),))
