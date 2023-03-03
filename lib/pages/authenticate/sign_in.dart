@@ -5,8 +5,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:techcombank_clone/services/auth.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({super.key});
-
+  final toggleView;
+  const SignIn({super.key, this.toggleView});
   @override
   State<SignIn> createState() => _SignInState();
 }
@@ -15,6 +15,8 @@ class _SignInState extends State<SignIn> {
   String email = '';
   String password= '';
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
+  String error = '';
 
 
   @override
@@ -22,6 +24,7 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
         backgroundColor: Colors.grey[300],
         body: Form(
+          key: _formKey,
           child: Container(
               // decoration: BoxDecoration(
               //   image: DecorationImage(
@@ -38,6 +41,7 @@ class _SignInState extends State<SignIn> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: TextFormField(
+                      validator: (value) => value!.isEmpty ? 'Enter an email' : null,
                       onChanged: (value){
                         setState(() {
                           email = value;
@@ -60,6 +64,7 @@ class _SignInState extends State<SignIn> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: TextFormField(
+                      validator: (value) => value!.length < 6  ? 'Enter a password 6+ characters long' : null,
                       onChanged: (value){
                         setState(() {
                           password = value;
@@ -82,16 +87,14 @@ class _SignInState extends State<SignIn> {
                   SizedBox(height: 25),
                   GestureDetector(
                     onTap: () async {
-                      // dynamic result = await _auth.signInAno();
-                      // if(result == null){
-                      //   print('error signing in ');
-                      // } else {
-                      //   print('signed in');
-                      //   print(result.uid);
-                      // }
-                      // Navigator.pushReplacementNamed(context, '/home');
-                      print(email);
-                      print(password);
+                      if(_formKey.currentState!.validate()){
+                        dynamic result = _auth.signInWithEmailAndPassword(email, password);
+                        if(result == null){
+                          setState(() {
+                            error = 'Could not sign in with with those credentials';
+                          });
+                        }
+                      }
                     },
                     child: Container(
                       padding: EdgeInsets.all(25),
@@ -131,12 +134,18 @@ class _SignInState extends State<SignIn> {
                               backgroundColor: MaterialStatePropertyAll<Color>(Colors.black)
                             ),
                             onPressed: (){
-                              Navigator.pushReplacementNamed(context, '/signin');
+                              //Navigator.pushReplacementNamed(context, '/signin');
+                              widget.toggleView();
                             }, 
                             child: Text('Register', style: TextStyle(color: Colors.white),))
                         ]
                       ),
                     ),
+                  SizedBox(height: 12),
+                  Text(
+                    error,
+                    style: TextStyle(color: Colors.red, fontSize: 14),
+                  )
                 ]),
               ),
             ),
