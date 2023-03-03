@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:techcombank_clone/services/auth.dart';
+import 'package:techcombank_clone/shared/loadingScreen.dart';
+
 
 class SignIn extends StatefulWidget {
   final toggleView;
@@ -17,11 +19,12 @@ class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   String error = '';
+  bool loading = false;
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? LoadingScreen() :Scaffold(
         backgroundColor: Colors.grey[300],
         body: Form(
           key: _formKey,
@@ -88,11 +91,16 @@ class _SignInState extends State<SignIn> {
                   GestureDetector(
                     onTap: () async {
                       if(_formKey.currentState!.validate()){
+                        setState(() {
+                          loading = true;
+                        });
                         dynamic result = _auth.signInWithEmailAndPassword(email, password);
+                        print(result.toString());
                         if(result == null){
                           setState(() {
-                            error = 'Could not sign in with with those credentials';
+                            error='Could not sign in with those credentials';
                           });
+                          loading = false;
                         }
                       }
                     },
