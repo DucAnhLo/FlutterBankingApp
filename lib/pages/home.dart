@@ -211,13 +211,28 @@ void _showSetting(BuildContext context) {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextButton.icon(
+
+                TextButton.icon(
+                onPressed: () async{
+                  
+                }, 
+                icon: Icon(Icons.qr_code_2_outlined, color: Colors.black, size: 30,), 
+                label: Text('Your QR code', style: TextStyle(color: Colors.grey, fontSize: 16),)),
+
+                TextButton.icon(
+                onPressed: () async{
+                  
+                }, 
+                icon: Icon(Icons.settings_outlined, color: Colors.black, size: 30,), 
+                label: Text('Settings', style: TextStyle(color: Colors.grey, fontSize: 16),)),
+
+                TextButton.icon(
                 onPressed: () async{
                   await _auth.signOut();
                   Navigator.pushReplacementNamed(context, '/wrapper');
                 }, 
                 icon: Icon(Icons.logout_rounded, color: Colors.black, size: 30,), 
-                label: Text('Log Out', style: TextStyle(color: Colors.grey, fontSize: 16),))
+                label: Text('Log Out', style: TextStyle(color: Colors.grey, fontSize: 16),)),
             ],
           )
         ),

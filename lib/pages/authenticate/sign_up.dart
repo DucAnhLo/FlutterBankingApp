@@ -54,7 +54,7 @@ class _SignInState extends State<SignUp> {
                           borderSide: BorderSide(color: Colors.white)
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400)
+                          borderSide: BorderSide(color: Colors.black)
                         ),
                         fillColor: Colors.grey.shade200,
                         filled: true,
@@ -78,7 +78,7 @@ class _SignInState extends State<SignUp> {
                           borderSide: BorderSide(color: Colors.white)
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400)
+                           borderSide: BorderSide(color: Colors.black)
                         ),
                         fillColor: Colors.grey.shade200,
                         filled: true,
@@ -91,6 +91,7 @@ class _SignInState extends State<SignUp> {
                     onTap: () async{
                       if(_formKey.currentState!.validate()){
                         dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                        if (!mounted) return;
                         if(result == null){
                           setState(() {
                             error = 'Please supply a valid email';

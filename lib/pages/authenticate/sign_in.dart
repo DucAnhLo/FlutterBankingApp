@@ -55,7 +55,7 @@ class _SignInState extends State<SignIn> {
                           borderSide: BorderSide(color: Colors.white)
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400)
+                          borderSide: BorderSide(color: Colors.black)
                         ),
                         fillColor: Colors.grey.shade200,
                         filled: true,
@@ -79,7 +79,7 @@ class _SignInState extends State<SignIn> {
                           borderSide: BorderSide(color: Colors.white)
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400)
+                           borderSide: BorderSide(color: Colors.black)
                         ),
                         fillColor: Colors.grey.shade200,
                         filled: true,
@@ -95,7 +95,7 @@ class _SignInState extends State<SignIn> {
                           loading = true;
                         });
                         dynamic result = _auth.signInWithEmailAndPassword(email, password);
-                        print(result.toString());
+                        if (!mounted) return;
                         if(result == null){
                           setState(() {
                             error='Could not sign in with those credentials';
