@@ -96,6 +96,7 @@ class _SignInState extends State<SignUp> {
                           setState(() {
                             error = 'Please supply a valid email';
                           });
+                          print(error);
                         }
                       }
                     },

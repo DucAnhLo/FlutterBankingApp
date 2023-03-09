@@ -24,7 +24,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return loading ? LoadingScreen() :Scaffold(
+    return Scaffold(
         backgroundColor: Colors.grey[300],
         body: Form(
           key: _formKey,
@@ -89,18 +89,14 @@ class _SignInState extends State<SignIn> {
                   ),
                   SizedBox(height: 25),
                   GestureDetector(
-                    onTap: () async {
+                    onTap: () async{
                       if(_formKey.currentState!.validate()){
-                        setState(() {
-                          loading = true;
-                        });
-                        dynamic result = _auth.signInWithEmailAndPassword(email, password);
+                        dynamic result = await _auth.signInWithEmailAndPassword(email, password);
                         if (!mounted) return;
                         if(result == null){
                           setState(() {
-                            error='Could not sign in with those credentials';
+                            error = 'Could not sign in with these credentials';
                           });
-                          loading = false;
                         }
                       }
                     },

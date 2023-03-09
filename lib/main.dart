@@ -17,11 +17,7 @@ import 'package:techcombank_clone/services/auth.dart';
 Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(StreamProvider<MyUser?>.value(
-    catchError: (_, __) => null,
-    initialData: null,
-    value: AuthService().myUser,
-    child: MaterialApp(
+  runApp( MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/wrapper',
       routes: {
@@ -32,6 +28,6 @@ Future <void> main() async {
         '/signin':(context) => SignIn()
       },
     ),
-  ));                                                                                                                                                                       
+  );                                                                                                                                                                       
 }
 
