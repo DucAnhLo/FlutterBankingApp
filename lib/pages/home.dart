@@ -98,13 +98,16 @@ class _HomeState extends State<Home> {
                         color: Colors.white
                       ),
                       width: 200,
-                      height: 85,
+                      height: 90,
                       padding: EdgeInsets.all(10),
                       child: Column(
                         children: <Widget>[
                           Text('Balance:', style: TextStyle(fontSize: 19)),
                           SizedBox(height: 5),
                           Text("£$balance",style: TextStyle(fontSize: 30)),
+                          // Text('Account Number:', style: TextStyle(fontSize: 19)),
+                          // SizedBox(height: 5),
+                          // Text("$accountNumber",style: TextStyle(fontSize: 30)),
                         ],
                       ),
                     ),
@@ -257,7 +260,7 @@ void _showSetting(BuildContext context) {
 
                 TextButton.icon(
                 onPressed: () async{
-                  
+                  Navigator.pushNamed(context, '/qrCode');
                 }, 
                 icon: Icon(Icons.qr_code_2_outlined, color: Colors.black, size: 30,), 
                 label: Text('Your QR code', style: TextStyle(color: Colors.grey, fontSize: 16),)),
