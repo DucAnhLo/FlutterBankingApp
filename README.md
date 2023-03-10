@@ -1,4 +1,4 @@
-# techcombank_clone
+# Banking App
 
 A new Flutter project.
 
