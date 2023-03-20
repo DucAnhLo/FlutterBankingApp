@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:techcombank_clone/models/user.dart';
 
 
 class qrCode extends StatefulWidget {
@@ -19,21 +20,41 @@ class _qrCodeState extends State<qrCode> {
     int? balance;
 
 
-   _fetch() async {
+  //  _fetch() async {
+  //     final user = FirebaseAuth.instance.currentUser!;
+  //     if(user != null){
+  //       await FirebaseFirestore.instance
+  //       .collection("user")
+  //       .doc(user.uid)
+  //       .get()
+  //       .then((value){
+  //         name = value.data()?['name'];
+  //         accountNumber = value.data()?['accountNumber'];
+  //         balance = value.data()?['balance'];
+  //       });
+  //     }
+  //   }
+  Future<UserData> _fetch() async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) {
+    throw Exception("User not authenticated"); // or return a default value
+  }
 
-      final user = FirebaseAuth.instance.currentUser!;
-      if(user != null){
-        await FirebaseFirestore.instance
-        .collection("user")
-        .doc(user.uid)
-        .get()
-        .then((value){
-          name = value.data()?['name'];
-          accountNumber = value.data()?['accountNumber'];
-          balance = value.data()?['balance'];
-        });
-      }
-    }
+  final snapshot = await FirebaseFirestore.instance
+      .collection("user")
+      .doc(user.uid)
+      .get();
+  if (!snapshot.exists) {
+    throw Exception("User data not found"); // or return a default value
+  }
+
+  return UserData(
+    uid: user.uid,
+    name: snapshot.data()?['name'],
+    accountNumber: snapshot.data()?['accountNumber'],
+    balance: snapshot.data()?['balance'],
+  );
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(

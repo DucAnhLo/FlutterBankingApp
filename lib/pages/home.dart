@@ -10,6 +10,8 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:techcombank_clone/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techcombank_clone/shared/loadingScreen.dart';
+import 'dart:convert';
+
 
 
 class Home extends StatefulWidget {
@@ -19,39 +21,44 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String qrCode = 'Unknown';
-    String? name;
-    int? accountNumber;
-    int? balance;
+  late UserData qrCode;
+  String? name;
+  int? accountNumber;
+  int? balance;
 
 
     
-  Future<void> scanQRCode() async {
-    try {
-      final qrCode = await FlutterBarcodeScanner.scanBarcode(
-        '#ff6666',
-        'Cancel',
-        false,
-        ScanMode.QR,
-      );
+Future<void> scanQRCode() async {
+  try {
+    final qrCode = await FlutterBarcodeScanner.scanBarcode(
+      '#ff6666',
+      'Cancel',
+      false,
+      ScanMode.QR,
+    );
 
-      if (!mounted) return;
+    if (!mounted) return;
 
-      setState(() {
-        this.qrCode = qrCode;
-      });
+    final userData = UserData.fromJson(jsonDecode(qrCode));
+    setState(() {
+      this.qrCode = userData;
+    });
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Transfer(qrCodeContent: qrCode),
-    ));
+    // Navigate to the transfer page with the parsed user data
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Transfer(qrCodeContent: userData),
+      ),
+    );
+  } on PlatformException {
+    UserData errorUserData = UserData(name: 'Failed to get platform version.');
+    setState(() {
+      qrCode = errorUserData;
+    });
 
-      
-    } on PlatformException {
-      qrCode = 'Failed to get platform version.';
-    }
   }
+}
   @override
   Widget build(BuildContext context) {
     // return StreamBuilder<UserData>(
@@ -179,21 +186,27 @@ class _HomeState extends State<Home> {
        
       } 
     //);
-    _fetch() async {
+   Future<UserData> _fetch() async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) {
+    throw Exception("User not authenticated"); // or return a default value
+  }
 
-      final user = FirebaseAuth.instance.currentUser!;
-      if(user != null){
-        await FirebaseFirestore.instance
-        .collection("user")
-        .doc(user.uid)
-        .get()
-        .then((value){
-          name = value.data()?['name'];
-          accountNumber = value.data()?['accountNumber'];
-          balance = value.data()?['balance'];
-        });
-      }
-    }
+  final snapshot = await FirebaseFirestore.instance
+      .collection("user")
+      .doc(user.uid)
+      .get();
+  if (!snapshot.exists) {
+    throw Exception("User data not found"); // or return a default value
+  }
+
+  return UserData(
+    uid: user.uid,
+    name: snapshot.data()?['name'],
+    accountNumber: snapshot.data()?['accountNumber'],
+    balance: snapshot.data()?['balance'],
+  );
+}
       
   }
 //}

@@ -1,15 +1,13 @@
 import 'package:techcombank_clone/models/user.dart';
 
-class Transaction {
-  final String id;
-  final UserData user;
+class Transactions {
+  final UserData user_id;
   final int type;
   final String title;
-  final double amount;
+  final int amount;
 
-  Transaction({
-    required this.id,
-    required this.user,
+  Transactions({
+    required this.user_id,
     required this.type,
     required this.title,
     required this.amount,

@@ -15,9 +15,9 @@ class AuthService {
   int? balance;
   
 
-  // UserData? _userFromFirebaseUser(User user){
-  //   return user != null ? UserData(uid: user.uid) : null;
-  // }
+  UserData? _userFromFirebaseUser(User user){
+    return user != null ? UserData(uid: user.uid) : null;
+  }
 
   // //auth change user stream
   // Stream<UserData?> get myUser {
