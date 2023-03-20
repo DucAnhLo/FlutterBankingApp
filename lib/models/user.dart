@@ -16,6 +16,7 @@ class UserData {
 
   Map<String, dynamic> toJson() {
     return {
+      'uid': uid,
       'name': name,
       'accountNumber': accountNumber,
       'balance': balance

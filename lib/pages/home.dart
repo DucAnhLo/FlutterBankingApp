@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:techcombank_clone/models/user.dart';
-import 'package:techcombank_clone/pages/transaction.dart';
 import 'package:flutter/services.dart';
+import 'package:techcombank_clone/pages/transfer.dart';
 import 'package:techcombank_clone/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,6 +40,14 @@ class _HomeState extends State<Home> {
       setState(() {
         this.qrCode = qrCode;
       });
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Transfer(qrCodeContent: qrCode),
+    ));
+
+      
     } on PlatformException {
       qrCode = 'Failed to get platform version.';
     }

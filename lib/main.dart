@@ -5,6 +5,7 @@ import 'package:techcombank_clone/pages/authenticate/sign_in.dart';
 import 'package:techcombank_clone/pages/authenticate/sign_up.dart';
 import 'package:techcombank_clone/pages/home.dart';
 import 'package:techcombank_clone/pages/loading.dart';
+import 'package:techcombank_clone/pages/transfer.dart';
 import 'package:techcombank_clone/pages/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,7 @@ Future <void> main() async {
         '/signup':(context) => SignUp(),
         '/signin':(context) => SignIn(),
         '/qrCode' :(context) => qrCode()
+        
       },
     ),
   );                                                                                                                                                                       
