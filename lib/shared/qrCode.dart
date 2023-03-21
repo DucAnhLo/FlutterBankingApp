@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -35,25 +37,25 @@ class _qrCodeState extends State<qrCode> {
   //     }
   //   }
   Future<UserData> _fetch() async {
-  final user = FirebaseAuth.instance.currentUser;
-  if (user == null) {
-    throw Exception("User not authenticated"); // or return a default value
-  }
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw Exception("User not authenticated"); // or return a default value
+    }
 
-  final snapshot = await FirebaseFirestore.instance
-      .collection("user")
-      .doc(user.uid)
-      .get();
-  if (!snapshot.exists) {
-    throw Exception("User data not found"); // or return a default value
-  }
+    final snapshot = await FirebaseFirestore.instance
+        .collection("user")
+        .doc(user.uid)
+        .get();
+    if (!snapshot.exists) {
+      throw Exception("User data not found"); // or return a default value
+    }
 
-  return UserData(
-    uid: user.uid,
-    name: snapshot.data()?['name'],
-    accountNumber: snapshot.data()?['accountNumber'],
-    balance: snapshot.data()?['balance'],
-  );
+    return UserData(
+      uid: user.uid,
+      name: snapshot.data()?['name'],
+      accountNumber: snapshot.data()?['accountNumber'].toString() ?? '',
+      balance: snapshot.data()?['balance'],
+    );
 }
   @override
   Widget build(BuildContext context) {
@@ -69,6 +71,7 @@ class _qrCodeState extends State<qrCode> {
           future: _fetch(),
           builder: (context, snapshot) {
             if(snapshot.connectionState != ConnectionState.done);
+            final userData = snapshot.data;
             return Center(
               child: Column(
                 children: [
@@ -93,8 +96,8 @@ class _qrCodeState extends State<qrCode> {
               ),
                   SizedBox(height: 110,),
                   Text("Scan to transfer to", style: TextStyle(fontSize: 21)),
-                  Text("$name", style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold)),
-                  Text("$accountNumber",style: TextStyle(fontSize: 21)),
+                  Text("${userData?.name}", style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold)),
+                  Text("${userData?.accountNumber}",style: TextStyle(fontSize: 21)),
                   SizedBox(height: 50,),
                   Container(
                     padding: EdgeInsets.all(10),
@@ -103,10 +106,9 @@ class _qrCodeState extends State<qrCode> {
                       color: Colors.white,
                     ),
                     child: QrImage(
-                        data: "$accountNumber",
+                        data:"${userData?.accountNumber}",
                         version: QrVersions.auto,
                         size: 300.0,
-                        
                     ),
                   ),
                   Row(
@@ -128,7 +130,11 @@ class _qrCodeState extends State<qrCode> {
                             color: Colors.black,
                           ),
                           onPressed: () {
-
+                            // print(userData?.accountNumber);
+                            // print(userData?.uid);
+                            // print(userData?.name);
+                            // print(userData?.balance);
+                            print(userData!.accountNumber);
                           },
                         ),
                 ),

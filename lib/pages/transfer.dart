@@ -5,9 +5,10 @@ import 'package:techcombank_clone/services/auth.dart';
 import 'package:techcombank_clone/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:techcombank_clone/shared/qrCode.dart';
 
 class Transfer extends StatefulWidget {
-  final UserData qrCodeContent;
+  final String qrCodeContent;
   const Transfer({super.key, required this.qrCodeContent});
 
   @override
@@ -15,10 +16,51 @@ class Transfer extends StatefulWidget {
 }
 
 class _TransferState extends State<Transfer> {
+      int? amount;
+      Future<void> makeTransfer() async {
+        AuthService _auth = AuthService();
+        final user = FirebaseAuth.instance.currentUser!;
+        UserData receiverData = await findReceiverUser(widget.qrCodeContent);
+        print(receiverData.toJson());
+
+        // Transactions sender = await DatabaseService(uid: user.uid)
+        //     .saveTransferDetail(receiverData, -1, "test", amount!);
+        // Transactions receiver = await DatabaseService(uid: receiverData.uid)
+        //     .saveTransferDetail(user, 1, "test", amount!);
+
+        // setState(() {
+        //   receiverData.balance += amount!;
+        // });
+
+        // // update the sender's balance
+        // UserData currentUser =
+        //     await DatabaseService(uid: user.uid).getUserData() as UserData;
+        // currentUser.balance = sender.type * sender.amount;
+        // await DatabaseService(uid: user.uid).updateUserData(currentUser);
+  }
+
+    Future<UserData> findReceiverUser(String qrCodeContent) async {
+  
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('user')
+        .where('accountNumber', isEqualTo: qrCodeContent)
+        .get();
+    print('Query snapshot: $querySnapshot');
+    if (querySnapshot.docs.isEmpty) {
+      throw Exception('User not found');
+    }
+
+    final userData = querySnapshot.docs.first.data();
+    return UserData(
+      uid: userData['uid'],
+      name: userData['name'],
+      accountNumber: userData['accountNumber'],
+      balance: userData['balance'],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    int amount;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Transfer'),
@@ -67,7 +109,7 @@ class _TransferState extends State<Transfer> {
             SizedBox(height: 30,),
             GestureDetector(
                     onTap: () async{
-                      MakeTransfer();
+                      makeTransfer();
                     },
                     child: Container(
                       padding: EdgeInsets.all(25),
@@ -92,17 +134,6 @@ class _TransferState extends State<Transfer> {
         ),
       ),
     );
-  }
-
-  void MakeTransfer() async{
-    AuthService _auth = AuthService();
-    final user = FirebaseAuth.instance.currentUser!;
-   // UserData receiverData = 
-    // UserData currentUser = UserData(uid: user.uid);
-    // Transactions sender = await DatabaseService(uid: user.uid).saveTransferDetail(currentUser, -1, "test", 1000);
-    // Transactions receiver = await DatabaseService(uid: user.uid).saveTransferDetail(currentUser, 1, "test", 1000);
-    // currentUser.balance = sender.type * sender.amount;
-
   }
 }
 

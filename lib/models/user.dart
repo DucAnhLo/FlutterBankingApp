@@ -4,6 +4,7 @@
 //   MyUser({this.uid});
 
 // }
+import 'dart:convert';
 
 
 class UserData {
@@ -12,7 +13,7 @@ class UserData {
   final String? accountNumber;
   int? balance;
 
-  UserData({this.uid, this.name, this.accountNumber, this.balance});
+  UserData({this.uid, this.name,this.accountNumber, this.balance});
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         uid: json['uid'],

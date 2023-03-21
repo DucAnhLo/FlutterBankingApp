@@ -21,7 +21,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late UserData qrCode;
+  String? qrCode = ""; // initialize to default value
   String? name;
   int? accountNumber;
   int? balance;
@@ -39,22 +39,22 @@ Future<void> scanQRCode() async {
 
     if (!mounted) return;
 
-    final userData = UserData.fromJson(jsonDecode(qrCode));
+    //final userData = UserData.fromJson(jsonDecode(qrCode));
     setState(() {
-      this.qrCode = userData;
+      this.qrCode = qrCode;
     });
 
     // Navigate to the transfer page with the parsed user data
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Transfer(qrCodeContent: userData),
+        builder: (context) => Transfer(qrCodeContent: qrCode),
       ),
     );
   } on PlatformException {
     UserData errorUserData = UserData(name: 'Failed to get platform version.');
     setState(() {
-      qrCode = errorUserData;
+      qrCode = errorUserData as String?;
     });
 
   }
@@ -99,7 +99,28 @@ Future<void> scanQRCode() async {
               FutureBuilder(
                 future: _fetch(),
                 builder: (context, snapshot) {
-                  if(snapshot.connectionState != ConnectionState.done);
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  // Display a loading indicator while waiting for the balance to load
+                  return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                if (snapshot.hasError) {
+                  // Handle errors that occur while loading the balance
+                  return Center(
+                    child: Text("Error: ${snapshot.error}"),
+                  );
+                }
+
+                final userData = snapshot.data;
+
+                if (userData == null) {
+                  // If the user data is null, display a message indicating that it could not be loaded
+                  return Center(
+                    child: Text("User data not found"),
+                  );
+                }
                   return Padding(
                   padding: const EdgeInsets.fromLTRB(0,50,0,0),
                   child: Align(
@@ -119,7 +140,7 @@ Future<void> scanQRCode() async {
                         children: <Widget>[
                           Text('Balance:', style: TextStyle(fontSize: 19)),
                           SizedBox(height: 5),
-                          Text("£$balance",style: TextStyle(fontSize: 30)),
+                          Text("£${userData.balance}",style: TextStyle(fontSize: 30)),
                           // Text('Account Number:', style: TextStyle(fontSize: 19)),
                           // SizedBox(height: 5),
                           // Text("$accountNumber",style: TextStyle(fontSize: 30)),
@@ -187,25 +208,25 @@ Future<void> scanQRCode() async {
       } 
     //);
    Future<UserData> _fetch() async {
-  final user = FirebaseAuth.instance.currentUser;
-  if (user == null) {
-    throw Exception("User not authenticated"); // or return a default value
-  }
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw Exception("User not authenticated"); // or return a default value
+    }
 
-  final snapshot = await FirebaseFirestore.instance
-      .collection("user")
-      .doc(user.uid)
-      .get();
-  if (!snapshot.exists) {
-    throw Exception("User data not found"); // or return a default value
-  }
+    final snapshot = await FirebaseFirestore.instance
+        .collection("user")
+        .doc(user.uid)
+        .get();
+    if (!snapshot.exists) {
+      throw Exception("User data not found"); // or return a default value
+    }
 
-  return UserData(
-    uid: user.uid,
-    name: snapshot.data()?['name'],
-    accountNumber: snapshot.data()?['accountNumber'],
-    balance: snapshot.data()?['balance'],
-  );
+    return UserData(
+      uid: user.uid,
+      name: snapshot.data()?['name'],
+      accountNumber: snapshot.data()?['accountNumber'].toString() ?? '',
+      balance: snapshot.data()?['balance'] as int?,
+    );
 }
       
   }
