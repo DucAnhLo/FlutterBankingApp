@@ -28,4 +28,13 @@ class UserData {
         'accountNumber': accountNumber,
         'balance': balance,
       };
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'name': name,
+      'accountNumber': accountNumber,
+      'balance': balance,
+    };
+  }
 }

@@ -21,22 +21,23 @@ class _TransferState extends State<Transfer> {
         AuthService _auth = AuthService();
         final user = FirebaseAuth.instance.currentUser!;
         UserData receiverData = await findReceiverUser(widget.qrCodeContent);
-        print(receiverData.toJson());
 
         // Transactions sender = await DatabaseService(uid: user.uid)
         //     .saveTransferDetail(receiverData, -1, "test", amount!);
-        // Transactions receiver = await DatabaseService(uid: receiverData.uid)
-        //     .saveTransferDetail(user, 1, "test", amount!);
+        Transactions receiver = await DatabaseService(uid: receiverData.uid)
+            .saveTransferDetail(receiverData,1,"Mua thit", 10);
 
-        // setState(() {
-        //   receiverData.balance += amount!;
-        // });
+        // Update the balance of the receiver
+        setState(() {
+          receiverData.balance = (receiverData.balance ?? 0) + (amount ?? 0);
+        });
+
 
         // // update the sender's balance
         // UserData currentUser =
-        //     await DatabaseService(uid: user.uid).getUserData() as UserData;
-        // currentUser.balance = sender.type * sender.amount;
-        // await DatabaseService(uid: user.uid).updateUserData(currentUser);
+        
+        print(receiverData.balance);
+        
   }
 
     Future<UserData> findReceiverUser(String qrCodeContent) async {
@@ -79,7 +80,7 @@ class _TransferState extends State<Transfer> {
                   child: TextFormField(
                     onChanged: (value) {
                       setState(() {
-                          amount = value as int;
+                          amount =int.parse(value);
                         });
                     },
                     keyboardType: TextInputType.numberWithOptions(decimal: true),

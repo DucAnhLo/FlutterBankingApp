@@ -40,7 +40,7 @@ class DatabaseService {
      await transactionCollection.doc(uid).set({
       "type": type,
       "title": title,
-      "user_id": user,
+      "user_id": user.toMap(),
       "amount":amount
     });
     Transactions trans = Transactions(user_id: user, type: type, title: title, amount: amount);
