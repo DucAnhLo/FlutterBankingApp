@@ -36,7 +36,6 @@ class _SignInState extends State<SignUp> {
                 // )
               ),
               padding: EdgeInsets.only(top: 150),
-              child: Center(
                 child: SingleChildScrollView(
                   child: Column(children: [
                     SizedBox(height: 50,),
@@ -156,7 +155,6 @@ class _SignInState extends State<SignUp> {
                 ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

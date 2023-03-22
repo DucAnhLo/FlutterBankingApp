@@ -106,8 +106,7 @@ class _TransferState extends State<Transfer> {
       appBar: AppBar(
         title: Text('Transfer'),
       ),
-      body: Center(
-        child: SingleChildScrollView(
+      body:  SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(height: 200,),
@@ -184,8 +183,7 @@ class _TransferState extends State<Transfer> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
