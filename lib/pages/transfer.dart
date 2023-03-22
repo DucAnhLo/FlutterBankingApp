@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:techcombank_clone/models/transaction.dart';
 import 'package:techcombank_clone/models/user.dart';
@@ -6,6 +8,7 @@ import 'package:techcombank_clone/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techcombank_clone/shared/qrCode.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class Transfer extends StatefulWidget {
   final String qrCodeContent;
@@ -16,9 +19,9 @@ class Transfer extends StatefulWidget {
 }
 
 class _TransferState extends State<Transfer> {
-      String error = "";
       int? amount;
-      Future<void> makeTransfer() async {
+      Future<bool> makeTransfer() async {
+        bool success = false;
         AuthService _auth = AuthService();
         final user = FirebaseAuth.instance.currentUser!;
         UserData senderData = await findSenderUser(user.uid);
@@ -28,7 +31,7 @@ class _TransferState extends State<Transfer> {
         // Validate sender balance
         if((amount ?? 0) > (senderData.balance  ?? 0)){
           setState(() {
-            error = "Not enough money to make transfer";
+            success = false;
           });
         } else {
           Transactions sender = await DatabaseService(uid: user.uid)
@@ -62,7 +65,11 @@ class _TransferState extends State<Transfer> {
                 .update({'balance': senderData.balance});
             }
           }
+          setState(() {
+            success = true;
+          });
         }
+        return success;
   }
 
   Future<UserData> findReceiverUser(String qrCodeContent) async {
@@ -155,7 +162,11 @@ class _TransferState extends State<Transfer> {
               SizedBox(height: 30,),
               GestureDetector(
                       onTap: () async{
-                        makeTransfer();
+                        if(await makeTransfer()){
+                          _sucessdialog(context);
+                        }else {
+                          _errordialog(context);
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.all(25),
@@ -176,10 +187,6 @@ class _TransferState extends State<Transfer> {
                   ),
                 ),
               ),
-              Text("$error", style: TextStyle(
-                color: Colors.red,
-                fontSize: 20
-              ),)
             ],
           ),
         ),
@@ -187,4 +194,38 @@ class _TransferState extends State<Transfer> {
   }
 }
 
+void _sucessdialog(BuildContext context){              
+  AwesomeDialog(
+    context: context,
+    animType: AnimType.leftSlide,
+    headerAnimationLoop: false,
+    dialogType: DialogType.success,
+    showCloseIcon: true,
+    title: 'Succes',
+    desc:
+        'Transfer successfull.',
+    btnOkOnPress: () {
+      debugPrint('OnClcik');
+      Navigator.pushReplacementNamed(context, "/home");
+    },
+    btnOkIcon: Icons.check_circle,
+    onDismissCallback: (type) {
+      debugPrint('Dialog Dissmiss from callback $type');
+    },
+  ).show();
+}
 
+void _errordialog(BuildContext context){
+  AwesomeDialog(
+    context: context,
+    dialogType: DialogType.error,
+    animType: AnimType.rightSlide,
+    headerAnimationLoop: false,
+    title: 'Error',
+    desc:
+    'Insufficient funds',
+    btnOkOnPress: () {},
+    btnOkIcon: Icons.cancel,
+    btnOkColor: Colors.red,
+  ).show();
+}
