@@ -22,21 +22,21 @@ class _TransferState extends State<Transfer> {
         final user = FirebaseAuth.instance.currentUser!;
         UserData receiverData = await findReceiverUser(widget.qrCodeContent);
 
-        // Transactions sender = await DatabaseService(uid: user.uid)
-        //     .saveTransferDetail(receiverData, -1, "test", amount!);
+        Transactions sender = await DatabaseService(uid: user.uid)
+            .saveTransferDetail(receiverData, -1, "Mua rau", amount!);
         Transactions receiver = await DatabaseService(uid: receiverData.uid)
-            .saveTransferDetail(receiverData,1,"Mua thit", 10);
+            .saveTransferDetail(receiverData,1,"Ban rau", amount!);
 
         // Update the balance of the receiver
         setState(() {
-          receiverData.balance = (receiverData.balance ?? 0) + (amount ?? 0);
+          receiverData.balance = (receiverData.balance ?? 0) + (amount ?? 0 * receiver.type);
         });
 
 
         // // update the sender's balance
         // UserData currentUser =
         
-        print(receiverData.balance);
+        print(receiver.type);
         
   }
 
@@ -46,7 +46,7 @@ class _TransferState extends State<Transfer> {
         .collection('user')
         .where('accountNumber', isEqualTo: qrCodeContent)
         .get();
-    print('Query snapshot: $querySnapshot');
+        print('Query snapshot: $querySnapshot');
     if (querySnapshot.docs.isEmpty) {
       throw Exception('User not found');
     }

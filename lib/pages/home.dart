@@ -218,7 +218,7 @@ Future<void> scanQRCode() async {
         .doc(user.uid)
         .get();
     if (!snapshot.exists) {
-      throw Exception("User data not found"); // or return a default value
+       Navigator.pushNamed(context, '/signin');// or return a default value
     }
 
     return UserData(

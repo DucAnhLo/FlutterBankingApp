@@ -47,11 +47,6 @@ class DatabaseService {
     return trans;
   }
 
-  Future transferMoney() async {
-    final currentUser = FirebaseAuth.instance.currentUser!;
-    
-  }
-
   Future getTransferDetail() async {
     DocumentReference docRef = FirebaseFirestore.instance.collection('transaction').doc('Z2BNS5BDwBxhtbuHXQzt');
     docRef.get().then((DocumentSnapshot snapshot) {
