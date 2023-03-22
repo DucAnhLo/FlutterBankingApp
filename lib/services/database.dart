@@ -15,7 +15,7 @@ class DatabaseService {
   final CollectionReference transactionCollection = FirebaseFirestore.instance.collection('transaction');
   final CollectionReference transactionLinkCollection = FirebaseFirestore.instance.collection('transactionLink');
 
-  Future updateUserData(String name, int accountNumber, int balance) async {
+  Future updateUserData(String name, String accountNumber, int balance) async {
     return await userCollection.doc(uid).set({
       'name': name,
       'accountNumber':accountNumber,
@@ -28,7 +28,7 @@ class DatabaseService {
     DocumentSnapshot userInformation = await userCollection.doc(uid).get();
     if(userInformation.exists){
       String name = userInformation.get('name');
-      int accountNumber = userInformation.get('accountNumber');
+      String accountNumber = userInformation.get('accountNumber');
       int balance = userInformation.get('balance');
     }else {
       print("Document does not exits");

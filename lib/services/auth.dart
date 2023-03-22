@@ -11,7 +11,7 @@ class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Random random = new Random();
-  int? accountNumber;
+  String? accountNumber;
   int? balance;
   
 
@@ -53,7 +53,7 @@ class AuthService {
 
   //register with email and password
   Future registerWithEmailAndPassword(String email, String password) async{
-    accountNumber = random.nextInt(900000) + 100000;
+    accountNumber = (random.nextInt(900000) + 100000).toString();
     balance = random.nextInt(90) + 10;
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -64,7 +64,7 @@ class AuthService {
       print(e.toString());
       return null;
     }
-  }
+  } 
 
 
   //sign out
