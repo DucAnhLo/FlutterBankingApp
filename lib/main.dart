@@ -29,7 +29,7 @@ Future <void> main() async {
         '/home':(context) => Home(),
         '/signup':(context) => SignUp(),
         '/signin':(context) => SignIn(),
-        '/qrCode' :(context) => qrCode()
+        '/qrCode' :(context) => qrCode(),
         
       },
     ),

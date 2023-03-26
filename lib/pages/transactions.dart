@@ -17,10 +17,39 @@ class Transactions extends StatefulWidget {
 }
 
 class _TransactionsState extends State<Transactions> {
+  Object? data;
+  CollectionReference transactions= FirebaseFirestore.instance.collection('transaction');
+    // Get all documents from the collection
+ void printAllTransactions() {
+  transactions.snapshots().listen((querySnapshot) {
+    querySnapshot.docs.forEach((doc) {
+      Object? dataFromDoc = doc.data();
+      setState(() {
+        data = dataFromDoc;
+      });
+    });
+  });
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("Transactions")),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            children:[ 
+              TextButton(
+                onPressed: () {
+                  printAllTransactions();
+                },
+              child: Text("Click"),
+              ),
+              Text("$data")
+            ]
+          )
+        ),
+      ),
     );
   }
 }
