@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:techcombank_clone/services/auth.dart';
 import 'package:techcombank_clone/shared/qrCode.dart';
+import 'package:techcombank_clone/pages/transactions.dart';
 
 
 

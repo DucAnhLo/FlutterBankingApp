@@ -11,6 +11,8 @@ import 'package:techcombank_clone/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techcombank_clone/shared/loadingScreen.dart';
 import 'dart:convert';
+import 'package:techcombank_clone/pages/transactions.dart';
+
 
 
 
@@ -164,7 +166,10 @@ Future<void> scanQRCode() async {
                     children: <Widget>[
                       TextButton(
                         onPressed: (){
-                          
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Transactions()),
+                        );
                         },
                         child: Column(
                           children: <Widget>[
