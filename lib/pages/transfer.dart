@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:techcombank_clone/models/transaction.dart';
+import 'package:techcombank_clone/models/transactionlink.dart';
 import 'package:techcombank_clone/models/user.dart';
 import 'package:techcombank_clone/services/auth.dart';
 import 'package:techcombank_clone/services/database.dart';
@@ -26,6 +27,8 @@ class _TransferState extends State<Transfer> {
         final user = FirebaseAuth.instance.currentUser!;
         UserData senderData = await findSenderUser(user.uid);
         UserData receiverData = await findReceiverUser(widget.qrCodeContent);
+        DateTime now = DateTime.now();
+        String formattedDate = "${now.year}-${now.month}-${now.day}";
 
         
         // Validate sender balance
@@ -35,10 +38,12 @@ class _TransferState extends State<Transfer> {
           });
         } else {
           Transactions sender = await DatabaseService(uid: user.uid)
-            .saveTransferDetail(senderData, -1, "Mua rau", amount!);
+            .saveTransferDetail(senderData, -1, "Mua Thit", amount!);
           Transactions receiver = await DatabaseService(uid: receiverData.uid)
-            .saveTransferDetail(receiverData,1,"Ban rau", amount!);
+            .saveTransferDetail(receiverData,1,"Ban Thit", amount!);
 
+          TransactionLink link = await DatabaseService(uid: user.uid)
+            .saveTransferLinkDetail(sender.user_id, receiver.user_id, now);
         // Update the balance of the receiver
           receiverData.balance = (receiverData.balance ?? 0) + (amount ?? 0) * receiver.type;
           final receiverQuerySnapshot = await FirebaseFirestore.instance

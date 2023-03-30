@@ -1,6 +1,8 @@
+import 'package:techcombank_clone/models/user.dart';
+
 class TransactionLink {
-  final String transactionToId;
-  final String transactionFromId;
+  final UserData transactionToId;
+  final UserData transactionFromId;
   final DateTime dateTime;
 
   TransactionLink({

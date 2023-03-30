@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:techcombank_clone/models/transactionlink.dart';
 import 'package:techcombank_clone/models/user.dart';
 import 'package:techcombank_clone/models/user.dart';
 import 'package:techcombank_clone/models/transaction.dart';
@@ -46,6 +47,18 @@ class DatabaseService {
     Transactions trans = Transactions(user_id: user, type: type, title: title, amount: amount);
     return trans;
   }
+
+  Future<TransactionLink> saveTransferLinkDetail(UserData fromUserId, UserData toUserID, DateTime now) async {
+     await transactionLinkCollection.doc(uid).set({
+     "transactionFromId": fromUserId.toMap(),
+     "transactionToId": toUserID.toMap(),
+     "dateTime": now
+    });
+    TransactionLink transLink = TransactionLink(transactionToId: fromUserId, transactionFromId: toUserID, dateTime:now);
+    return transLink;
+  }
+
+
 
   Future getTransferDetail() async {
     DocumentReference docRef = FirebaseFirestore.instance.collection('transaction').doc('Z2BNS5BDwBxhtbuHXQzt');
