@@ -23,7 +23,6 @@ class _TransferState extends State<Transfer> {
       int? amount;
       Future<bool> makeTransfer() async {
         bool success = false;
-        AuthService _auth = AuthService();
         final user = FirebaseAuth.instance.currentUser!;
         UserData senderData = await findSenderUser(user.uid);
         UserData receiverData = await findReceiverUser(widget.qrCodeContent);

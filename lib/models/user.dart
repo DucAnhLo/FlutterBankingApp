@@ -1,9 +1,4 @@
-// class MyUser {
-//   final String? uid;
 
-//   MyUser({this.uid});
-
-// }
 import 'dart:convert';
 
 
@@ -37,4 +32,19 @@ class UserData {
       'balance': balance,
     };
   }
-}
+
+  // Override the == operator
+    @override
+    bool operator ==(other) {
+      return other is UserData &&
+          other.uid == uid &&
+          other.name == name &&
+          other.accountNumber == accountNumber &&
+          other.balance == balance;
+    }
+
+    // Override the hashCode function
+    @override
+    int get hashCode =>
+        uid.hashCode ^ name.hashCode ^ accountNumber.hashCode ^ balance.hashCode;
+  }

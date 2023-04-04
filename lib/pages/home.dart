@@ -63,12 +63,6 @@ Future<void> scanQRCode() async {
 }
   @override
   Widget build(BuildContext context) {
-    // return StreamBuilder<UserData>(
-    //   stream: DatabaseService(uid: user?.uid).userData,
-    //   builder:(context, snapshot){
-    //     UserData? userData = snapshot.data;
-    //     print(snapshot.data);
-    //     if(snapshot.hasData){
            return Scaffold(
             body: Container(
               decoration: BoxDecoration(
@@ -168,7 +162,7 @@ Future<void> scanQRCode() async {
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Transactions()),
+                            MaterialPageRoute(builder: (context) => Trans()),
                         );
                         },
                         child: Column(
