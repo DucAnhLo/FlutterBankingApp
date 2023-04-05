@@ -97,7 +97,7 @@ void initState() {
                     final transaction = userTransactions![index];
                     return ListTile(
                       title: Text(transaction.title),
-                      subtitle: Text(transaction.amount.toString()),
+                      subtitle: Text(transaction.type == 1 ? "+ " + transaction.amount.toString() : "- " + transaction.amount.toString()),
                       leading: Icon(transaction.type == 1 ? Icons.arrow_circle_up : Icons.arrow_circle_down),
                     );
                   },
