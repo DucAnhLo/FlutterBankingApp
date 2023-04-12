@@ -21,6 +21,7 @@ class Transfer extends StatefulWidget {
 
 class _TransferState extends State<Transfer> {
       int? amount;
+      String? content;
       Future<bool> makeTransfer() async {
         bool success = false;
         final user = FirebaseAuth.instance.currentUser!;
@@ -37,9 +38,9 @@ class _TransferState extends State<Transfer> {
           });
         } else {
           Transactions sender = await DatabaseService(uid: user.uid)
-            .saveTransferDetail(senderData, -1, "Mua Thit", amount!);
+            .saveTransferDetail(senderData, -1, content!, amount!);
           Transactions receiver = await DatabaseService(uid: receiverData.uid)
-            .saveTransferDetail(receiverData,1,"Ban Thit", amount!);
+            .saveTransferDetail(receiverData,1,content!, amount!);
 
           TransactionLink link = await DatabaseService(uid: user.uid)
             .saveTransferLinkDetail(sender.user_id, receiver.user_id, now);
@@ -161,6 +162,38 @@ class _TransferState extends State<Transfer> {
                   Text("To"),
                   SizedBox(width: 5,),
                   Text("${widget.qrCodeContent}")
+                ],
+              ),
+              SizedBox(height: 30,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Content:"),
+                  Flexible(child: SizedBox(
+                    width: 200,
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                            try {
+                              content = value;
+                            } catch (e) {
+                              content ='';
+                            }
+                          });
+                      },
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white)
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black)
+                        ),
+                        fillColor: Colors.grey.shade200,
+                        filled: true,
+                        hintText: 'content'
+                      ),
+                    ),
+                  ))
                 ],
               ),
               SizedBox(height: 30,),
