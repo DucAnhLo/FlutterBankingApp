@@ -30,7 +30,6 @@ class _TransferState extends State<Transfer> {
         DateTime now = DateTime.now();
         String formattedDate = "${now.year}-${now.month}-${now.day}";
 
-        
         // Validate sender balance
         if((amount ?? 0) > (senderData.balance  ?? 0)){
           setState(() {

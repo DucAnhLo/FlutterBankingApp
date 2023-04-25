@@ -35,28 +35,28 @@ class _TransactionsState extends State<Trans> {
     );
   }
     Future<void> _loadUserTransactions() async {
-  final querySnapshot = await FirebaseFirestore.instance
-      .collection('transaction')
-      .where('user_id.accountNumber', isEqualTo: currentUser!.accountNumber)
-      .get();
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('transaction')
+        .where('user_id.accountNumber', isEqualTo: currentUser!.accountNumber)
+        .get();
 
-  final List<Transactions> transactions = [];
-  for (var doc in querySnapshot.docs) {
-    final user = await findSenderUser(FirebaseAuth.instance.currentUser!);
-    final transaction = Transactions(
-      user_id: user,
-      type: doc['type'], 
-      title: doc['title'], 
-      amount: doc['amount'],
-    );
-    transactions.add(transaction);
-    print(doc.data());
+    final List<Transactions> transactions = [];
+    for (var doc in querySnapshot.docs) {
+      final user = await findSenderUser(FirebaseAuth.instance.currentUser!);
+      final transaction = Transactions(
+        user_id: user,
+        type: doc['type'], 
+        title: doc['title'], 
+        amount: doc['amount'],
+      );
+      transactions.add(transaction);
+      print(doc.data());
+    }
+
+    setState(() {
+      userTransactions = transactions;
+    });
   }
-
-  setState(() {
-    userTransactions = transactions;
-  });
-}
 
 
   @override
@@ -89,7 +89,8 @@ void initState() {
         child: Center(
           child: Column(
             children: [
-              Text("Balance: £${currentUser?.balance ?? 'Unknown'}"),
+              SizedBox(height: 30,),
+              Text("Balance: £${currentUser?.balance ?? 'Unknown'}", style: TextStyle(fontSize: 30),),
                Expanded(
                 child: ListView.builder(
                   itemCount: userTransactions!.length,
@@ -97,13 +98,12 @@ void initState() {
                     final transaction = userTransactions![index];
                     return ListTile(
                       title: Text(transaction.title),
-                      subtitle: Text(transaction.type == 1 ? "+ " + transaction.amount.toString() : "- " + transaction.amount.toString()),
+                      subtitle: Text(transaction.type == 1 ? "+ £" + transaction.amount.toString() : "- £" + transaction.amount.toString()),
                       leading: Icon(transaction.type == 1 ? Icons.arrow_circle_up : Icons.arrow_circle_down),
                     );
                   },
                 ),
               ),
-              TextButton(onPressed: () {}, child: Text("Click "))
             ],
           ),
         ),

@@ -16,11 +16,12 @@ class DatabaseService {
   final CollectionReference transactionCollection = FirebaseFirestore.instance.collection('transaction');
   final CollectionReference transactionLinkCollection = FirebaseFirestore.instance.collection('transactionLink');
 
-  Future updateUserData(String name, String accountNumber, int balance) async {
+  Future updateUserData(String name, String accountNumber, int balance, String password) async {
     return await userCollection.doc(uid).set({
       'name': name,
       'accountNumber':accountNumber,
-      'balance':balance
+      'balance':balance,
+      'password':password
     });
   }
 
